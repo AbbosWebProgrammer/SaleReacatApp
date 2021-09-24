@@ -12,7 +12,6 @@ class Index extends React.Component{
     state={
         linkValue:null,
         data:[],
-        products:[],
         datas:[]
     }
 
@@ -20,7 +19,7 @@ class Index extends React.Component{
         axios({
             'method':'get',
             //'get','post','put','delete'
-            'url':`https://jsonplaceholder.typicode.com/users`,
+            'url':`http://127.0.0.1:8000/api/SearchInNews/`,
 
         }).then( res=>{
             if (res){
@@ -34,30 +33,39 @@ class Index extends React.Component{
     }
 
     render(){
-        const {products,linkValue}=this.state;
         const inputChanged=(e)=>{
-            console.log(e.target.value)
-            this.setState({
-                linkValue:e.target.value,
-            })
-            this.state.products=this.state.datas
-            
-            
+            console.log(e.target.value);
+            if(e.target.value===''){
+                document.getElementById("main").classList.add("d-none");
+            }
+            else{
+                document.getElementById("main").classList.remove("d-none");
+                let url="http://127.0.0.1:8000/api/searchinproduct/";
+                url = url + e.target.value;
+                axios.get(url).then( res=>{
+                    if (res){
+                        this.setState({
+                            datas:res.data,
+                        })}
+                        console.log(res.data)
+
+                })
+            }
         }
         
         const AddSale=(e)=>{
-            console.log(e)
-            console.log(typeof(e))
-
-            this.setState({
-                linkValue:e,
-                
-            })
-            
-           
-
-            
-          }
+            const data= {"product":e,"sale":"Sale object (1)","quantity":"1"}
+            let url="http://127.0.0.1:8000/api/sale-product/";
+            url = url + e
+            axios.post(url,data).then( res=>{
+                if (res){
+                    this.setState({
+                        // products:res.data,
+                    })}
+                    console.log(res.data)
+            }) 
+        }
+        const {datas}=this.state;
      return(        
         <div className="">  
              <Row className="d-flex align-items-center m-1">
@@ -71,23 +79,27 @@ class Index extends React.Component{
                                 aria-label="Search"
                                 onChange={inputChanged}
                                 />
-                            <div className="absoulte bg-info w-100 rounded">
-                                <h1>{linkValue}</h1>
-                                <table class="table table-hover table-responsive-sm m-0">
-                                    <tbody  className="scrollable">
-                                        {
-                                        products?products.map(item=>{
-                                            return <tr onClick={()=>AddSale(item.id)}>
-                                                        <th scope="row">{item.id}</th>
-                                                        <td>{item.name}</td>
-                                                        <td>{item.username}</td>
-                                                        
-                                                    </tr>
-                                            }):''
-                                        }   
-                                    </tbody>
-                                </table>
-                                </div>
+                            <div id="main" className="absoulte bg-light w-100 rounded d-none heightsearch">
+                                <div className=" h-100 table-wrapper-scroll-y my-custom-scrollbar">
+                                        <table class="table table-hover table-responsive-sm">
+                                            <tbody  className="scrollable">
+                                                {
+                                                    datas?datas.map(item=>{
+                                                        return <tr  onClick={()=>AddSale(item.name)}>
+                                                                    <th scope="row">{item.id}</th>
+                                                                    <td>{item.name}</td>
+                                                                    <td>{item.seens}</td>
+                                                                    <td>{item.category}</td>
+                                                                    <td>{item.email}</td>
+                                                                </tr>
+                                                        }):''
+                                                }
+                                                
+                                            </tbody>
+                                            </table>
+                                 </div>
+                                
+                            </div>
                     
                         </div>
                         

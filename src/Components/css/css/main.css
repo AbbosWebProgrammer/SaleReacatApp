@@ -24,11 +24,12 @@ li{
 background:white;
   border: 1px solid rgb(255, 255, 255);
  
-  height: 300px;
+  height: 528px;
   margin-top: 10px;
 }
 .bgsecon{
   background: rgb(210, 207, 248);
+  height:100vh;
 }
 
 hr{
@@ -47,13 +48,15 @@ hr{
 }
 .sitebottom{
   height: 221px;
+  margin:0px  !important ;
+  margin-right:4px  !important ;
 }
 .my-custom-scrollbar {
   position: relative;
   height: 200px;
   overflow: auto;
   }
-  .table-wrapper-scroll-y {
+.table-wrapper-scroll-y {
   display: block;
   }
   .h-82{
@@ -61,9 +64,14 @@ hr{
   }
   .absoulte{
     position:absolute;
+    z-index: 2;
   }
 .relative{
   position: relative;
+}
+.heightsearch{
+  height: 305px;
+  background:cornsilk;
 }
 
 /* .site_about::before {
